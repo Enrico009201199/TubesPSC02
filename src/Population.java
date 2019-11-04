@@ -9,47 +9,42 @@
  * @author LENOVO
  */
 public class Population {
-    // Holds population of tours
+    // Array berisi permutasi urutan kota (tour)
     Tour[] tours;
 
-    // Construct a population
-    public Population(int populationSize, boolean initialise) {
-        tours = new Tour[populationSize];
-        // If we need to initialise a population of tours do so
-        if (initialise) {
-            // Loop and create individuals
-            for (int i = 0; i < populationSize(); i++) {
-                Tour newTour = new Tour();
-                newTour.generateIndividual();
-                saveTour(i, newTour);
-            }
+    // Constructor
+    public Population(int populationSize) {
+        this.tours = new Tour[populationSize];
+        for (int i = 0; i < populationSize; i++) {
+            Tour newTour = new Tour();
+            newTour.generateTour();
+            this.tours[i] = newTour;
         }
     }
     
-    // Saves a tour
+    // Menyimpan tour
     public void saveTour(int index, Tour tour) {
-        tours[index] = tour;
+        this.tours[index] = tour;
     }
     
-    // Gets a tour from population
+    // Mengambil tour pada index tertentu
     public Tour getTour(int index) {
-        return tours[index];
+        return this.tours[index];
     }
 
-    // Gets the best tour in the population
+    // Mengambil tour terbaik dari populasi
     public Tour getFittest() {
-        Tour fittest = tours[0];
-        // Loop through individuals to find fittest
+        Tour fittest = this.tours[0];
         for (int i = 1; i < populationSize(); i++) {
-            if (fittest.getFitness() <= getTour(i).getFitness()) {
-                fittest = getTour(i);
+            if (fittest.getFitness() <= this.getTour(i).getFitness()) {
+                fittest = this.getTour(i);
             }
         }
         return fittest;
     }
 
-    // Gets population size
+    // Mengambil ukuran populasi
     public int populationSize() {
-        return tours.length;
+        return this.tours.length;
     }
 }

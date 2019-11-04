@@ -12,20 +12,20 @@ import java.util.ArrayList;
 
 public class TourManager {
 
-    // Holds our cities
+    // Array kota
     private static ArrayList destinationCities = new ArrayList<City>();
 
-    // Adds a destination city
+    // Menambah kota ke array
     public static void addCity(City city) {
         destinationCities.add(city);
     }
     
-    // Get a city
+    // Mengambil kota di index tertentu
     public static City getCity(int index){
         return (City)destinationCities.get(index);
     }
     
-    // Get the number of destination cities
+    // Mengambil jumlah kota di array
     public static int numberOfCities(){
         return destinationCities.size();
     }

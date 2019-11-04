@@ -13,86 +13,81 @@ import java.util.Collections;
  * @author LENOVO
  */
 public class Tour {
-    // Holds our tour of cities
+    
+    // Array yang menyimpan urutan index kota yang akan dikunjungi
     private ArrayList tour = new ArrayList<City>();
-    // Cache
+    
+    // Nilai fitness
     private double fitness = 0;
+    
+    // Total jarak dari tour
     private int distance = 0;
     
-    // Constructs a blank tour
+    // Constructor tour kosong
     public Tour(){
         for (int i = 0; i < TourManager.numberOfCities(); i++) {
-            tour.add(null);
+            this.tour.add(null);
         }
     }
-    
-    public Tour(ArrayList tour){
-        this.tour = tour;
-    }
 
-    // Creates a random individual
-    public void generateIndividual() {
-        // Loop through all our destination cities and add them to our tour
+    // Membuat urutan tour
+    public void generateTour() {
+        // Memasukkan semua kota ke dalam tour
         for (int cityIndex = 0; cityIndex < TourManager.numberOfCities(); cityIndex++) {
-          setCity(cityIndex, TourManager.getCity(cityIndex));
+            setCity(cityIndex, TourManager.getCity(cityIndex));
         }
-        // Randomly reorder the tour
-        Collections.shuffle(tour);
+        // Mengacak urutan tour
+        Collections.shuffle(this.tour);
     }
 
-    // Gets a city from the tour
+    // Mengambil kota dari tour di posisi tertentu
     public City getCity(int tourPosition) {
-        return (City)tour.get(tourPosition);
+        return (City)this.tour.get(tourPosition);
     }
 
-    // Sets a city in a certain position within a tour
+    // Menempatkan suatu kota ke dalam tour di posisi tertentu
     public void setCity(int tourPosition, City city) {
         tour.set(tourPosition, city);
-        // If the tours been altered we need to reset the fitness and distance
-        fitness = 0;
-        distance = 0;
+        // Me-reset nilai fitness dan jarak
+        this.fitness = 0;
+        this.distance = 0;
     }
     
-    // Gets the tours fitness
+    // Getter nilai fitness
     public double getFitness() {
-        if (fitness == 0) {
-            fitness = 1/(double)getDistance();
+        if (this.fitness == 0) {
+            this.fitness = 1/(double)getDistance();
         }
-        return fitness;
+        return this.fitness;
     }
     
-    // Gets the total distance of the tour
+    // Menghitung jarak total tour
     public int getDistance(){
-        if (distance == 0) {
+        if (this.distance == 0) {
             int tourDistance = 0;
-            // Loop through our tour's cities
-            for (int cityIndex=0; cityIndex < tourSize(); cityIndex++) {
-                // Get city we're travelling from
-                City fromCity = getCity(cityIndex);
-                // City we're travelling to
-                City destinationCity;
-                // Check we're not on our tour's last city, if we are set our
-                // tour's final destination city to our starting city
-                if(cityIndex+1 < tourSize()){
-                    destinationCity = getCity(cityIndex+1);
+            for (int i = 0; i < tourSize(); i++) {
+                City start = getCity(i);
+                City target;
+                if(i + 1 < this.tourSize()){
+                    target = getCity(i + 1);
                 }
                 else{
-                    destinationCity = getCity(0);
+                    target = getCity(0);
                 }
                 // Get the distance between the two cities
-                tourDistance += fromCity.distanceTo(destinationCity);
+                tourDistance += start.distanceTo(target);
             }
-            distance = tourDistance;
+            this.distance = tourDistance;
         }
-        return distance;
+        return this.distance;
     }
 
-    // Get number of cities on our tour
+    // Mengambil jumlah kota dalam tour
     public int tourSize() {
         return tour.size();
     }
     
-    // Check if the tour contains a city
+    // Memeriksa apakah suatu kota terdapat di dalam tour
     public boolean containsCity(City city){
         return tour.contains(city);
     }
@@ -101,7 +96,7 @@ public class Tour {
     public String toString() {
         String geneString = "| ";
         for (int i = 0; i < tourSize(); i++) {
-            geneString += getCity(i)+" | ";
+            geneString += getCity(i).getIndex() + " | ";
         }
         return geneString;
     }
